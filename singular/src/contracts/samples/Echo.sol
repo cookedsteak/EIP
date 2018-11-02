@@ -3,20 +3,21 @@ pragma solidity ^0.4.24;
 import "./Logger.sol";
 
 // Modified Greeter contract. Based on example at https://www.ethereum.org/greeter.
-
+// For experiments only...
 contract Mortal {
     /* Define variable owner of the type address*/
     address owner;
 
     /* this function is executed at initialization and sets the owner of the contract */
-    constructor() { owner = msg.sender; }
+    constructor() public { owner = msg.sender; }
 
     /* Function to recover the funds on the contract */
-    function kill() {
-        require(msg.sender == owner, "only owner can kill");
+    function kill() public {
+        require(msg.sender == owner, "only the owner can kill the contract");
         selfdestruct(owner);
     }
 }
+
 
 contract Echo is Mortal, Logger {
 
@@ -29,7 +30,7 @@ contract Echo is Mortal, Logger {
     }
 
     function newGreeting(string _greeting) public {
-        Modified(greeting, _greeting, greeting, _greeting);
+        emit Modified(greeting, _greeting, greeting, _greeting);
         greeting = _greeting;
     }
 
@@ -42,9 +43,13 @@ contract Echo is Mortal, Logger {
     }
 
     /* main function */
-    function greet() constant returns (string) {
+    function greet() public constant returns (string) {
         return greeting;
     }
+
+//    function greet2() constant returns (string) {
+//        return greeting;
+//    }
 
     /* we include indexed events to demonstrate the difference that can be
     captured versus non-indexed

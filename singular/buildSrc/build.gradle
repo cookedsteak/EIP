@@ -1,0 +1,57 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.2.71'
+    id 'antlr'
+}
+
+ext {
+    web3jVersion = '3.6.0'
+    logbackVersion = '1.2.3'
+    junitVersion = '4.12'
+}
+
+//apply plugin: 'antlr'
+
+dependencies {
+    implementation gradleApi()
+//    implementation "org.web3j:core:$web3jVersion"
+//    implementation "org.web3j:geth:$web3jVersion"
+//    implementation "org.web3j:codegen:$web3jVersion"
+    implementation "org.web3j:console:$web3jVersion"
+//    implementation "ch.qos.logback:logback-core:$logbackVersion"
+//    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation 'org.antlr:antlr4-runtime:4.7.1'
+    antlr "org.antlr:antlr4:4.7.1" // use ANTLR version 4'. Critical!!
+//    antlr  group: "org.antlr", name: "antlr4", version: "4.7.1"
+//    compile group: "org.antlr", name: "antlr4-runtime", version: "4.7.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
+    
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/path repository here.
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+    gradlePluginPortal()
+}
+
+
+compileKotlin {
+    dependsOn generateGrammarSource
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+

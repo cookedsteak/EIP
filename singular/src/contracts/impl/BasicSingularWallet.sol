@@ -5,11 +5,12 @@ import "../SingularMeta.sol";
 import "../ITradable.sol";
 
 /**
- * A contract that binds an address (EOA/SC) to a list of Singular tokens. The
- * owner account may not have the ability to handle the Singular tokens directly,
+ *
+ * A contract that binds an address (EOA/SC) to a list of Singular tokens.
+ * The owner account may not have the ability to handle the Singular tokens directly,
  * thus they can take advantage of this contract to achieve the effect.
  *
- * All the tokens MUST have this account as the owner of them. It's up to the implemntation
+ * All the tokens MUST have this account as the owner of them. It's up to the implementation
  * to ensure the synchronization.
  *
  * The majority of token ownership management takes place in the `Singular` token.
@@ -17,35 +18,24 @@ import "../ITradable.sol";
  * @author Bing Ran<bran@udap.io>
  *
  */
-contract BasicSingularWallet is ISingularWallet, SingularMeta {/// can implement Singular to make a composite pattern
-
-
+contract BasicSingularWallet is ISingularWallet, SingularMeta {
     address theCreator;
 
-    /// list as the token set, since mapping does not give the ket set
+    /// list as the token set, since mapping does not give the key set
     ISingular[] internal tokens;
-//    uint256 internal totalTokens;
     uint assetTimestamp;
     bool internal autoReceive_ = true;        ///< policy in receiving incoming tokens
-
-    /// old verions of authorization is kept due to mapping's technical limitation
-    /// we use the tokenVersion to track the latest set of authorizations
-//    mapping(address => uint32) tokenVersion;
-
 
     address public ownerOfThis;
 
     constructor(
         string _name
-//        string _descr,
-//        string _tokenURI,
-//        bytes32 _tokenURIDigest
     )
     public
     {
         SingularMeta.init(
             _name,
-            "BasicSingularWallet",
+            "A BasicSingularWallet",
             "",
             "",
             0
@@ -260,7 +250,7 @@ contract BasicSingularWallet is ISingularWallet, SingularMeta {/// can implement
     ISingularWallet. The new container's owner is the the owner of this container
     */
     function slice(
-        ISingular[] elements    ///< the elements to move slice off from this container.
+        ISingular[] /*elements*/    ///< the elements to move slice off from this container.
     )
     external
     returns(
@@ -288,10 +278,10 @@ contract BasicSingularWallet is ISingularWallet, SingularMeta {/// can implement
     function addToTokenSet(ISingular token) internal {
         for (uint i = 0; i < tokens.length; i++) {
             if (token == tokens[i]) {
-                revert("duplicated when being inserted to token set in the wallet.");
+                revert("duplicated item when being inserted to token set in the wallet.");
             }
             else if (address(tokens[i]) == address(0)) {
-                revert("there was a hole in the asset array");
+                revert("there should not be a hole in the asset array");
             }
         }
         assetTimestamp = now;
@@ -340,5 +330,6 @@ contract BasicSingularWallet is ISingularWallet, SingularMeta {/// can implement
         require(msg.sender == ownerOfThis, "msg.sender was not the ownerOfThis");
         _;
     }
+
 }
 

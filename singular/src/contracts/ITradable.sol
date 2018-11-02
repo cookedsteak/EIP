@@ -6,6 +6,7 @@ import "./ISingular.sol";
 
 
 /**
+ *
  * @title Interface of tradable ISingular
  *
  * It supports:
@@ -14,10 +15,8 @@ import "./ISingular.sol";
  * 3. buy and sell
  * 4. auction (todo)
  *
- *
- *
  *  XXX: Ideally it should inherit from ISingular, but doing so causes remix IDE compiler to complain
- * about order of definitions. As a compromise, I added the toISingular() to bridge the two interface.
+ * about order of definitions. As a compromise, I added the toISingular() to bridge the two interfaces.
  *
  * @author Bing Ran<bran@udap.io>
  */
@@ -260,29 +259,20 @@ contract ITradable /*is ISingular*/ {
     )
     public;
 
-
-    /**
-    The owner of the desired item to accept the swap offer.
-    Again, source code must be verified to conduct the swap, due to lots of ownerships transitions.
-    The target must have been set up to do a swapping in the opposite direction before calling this function.
-    */
-//    function acceptSwap(
-//        ITradable target        ///< the target of the original swap proposal
-//    ) public;
-
-
     function rejectSwap(
         string note
     ) public;
 
     /**
-    to cancel all pending transaction offers.
-    */
+     * to cancel all pending trading offers.
+     */
     function reset() public;
 
-    /// compatible method
+    /// adapter method to aviod inheritance
     /// to make it ITradable compatible
-    function toISingular() public view returns(ISingular);
+    function toISingular() public view returns(
+        ISingular
+    );
 
 //    function owner() external view returns (ISingularWallet);
 

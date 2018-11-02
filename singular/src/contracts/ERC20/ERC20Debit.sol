@@ -7,19 +7,14 @@ import "../ISingular.sol";
 import "../impl/Tradable.sol";
 
 
-
 /**
  * @title A holder of ERC20 token values owned by by some party
  * 
- * The value is the denomination of the coin.
- * 
  */
 contract ERC20Debit is IDebit, Tradable {
-
     function contractName() external pure returns(string) {return "ERC20Debit";}
 
     IERC20 erc20_;
-//    IERC20DebitFactory _erc20Factory;
 
     function init(
         string name,
@@ -92,10 +87,10 @@ contract ERC20Debit is IDebit, Tradable {
     forTradeExecutor
     max128Bytes(note)
     {
-        require(address(newOwner) != address(0), "the newOwner was null");
-        ownerPrevious = theOwner;
+    require(address(newOwner) != address(0), "the newOwner was null");
         theOwner = newOwner;
         ownerPrevious.sent(this, note);
+        ownerPrevious = theOwner;
         theOwner.received(this, note);
         reset();
     }

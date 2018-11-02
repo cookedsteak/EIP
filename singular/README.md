@@ -14,6 +14,22 @@ In the singular/src directory:
 2. `truffle compile`
 3. `truffle test` 
 
+*New since 2018/10/29*: This version also introduced full testing support with web3j wrappers. The project is managed by gradle and the specific tasks are `solcWithWeb3j` and the artifacts are specified in the build.gradle file. It is intended to be a full replacement for the truffle dependency as the compiling and testing environment, for better performance and robustness.
+
+The steps are
+
+1. install native solc, the Solidity compiler
+1. install gradle build tool
+1. clone the repository (the web3 integration is currently in the `web3j` branch)
+1. to compile the contracts and rebuild the web3j wrappers: `./gradlew solcWithWeb3j`
+1. start the test blockchain: `ganache-cli -d`
+1. run the tests `./gradlew test`
+ 
+Check out the `build.gradle` for path configuration in the `solc` task.
+
+The tests are in `src/test/java/org/singular/web3j`
+ 
+
 Note: 
 
 1. I was using ganache GUI as the testing eth client, as reflected in the port setting in the truffle-config.json. 
